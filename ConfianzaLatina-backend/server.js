@@ -6,15 +6,21 @@ require('./src/config/db'); // Asegúrate de conectar la base de datos
 
 const authRoutes = require('./src/routes/auth');
 const reportRoutes = require('./src/routes/reportes');
-const trabajoRoutes = require('./src/routes/trabajos')
+const trabajoRoutes = require('./src/routes/trabajos');
+const adminRoutes  = require('./src/routes/adminRoutes');
+const empresaRoutes = require('./src/routes/empresaRoutes');
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+// rutas 
 app.use('/auth', authRoutes);
 app.use('/reportes', reportRoutes);
-app.use('/trabajo',trabajoRoutes )
+app.use('/trabajo',trabajoRoutes );
+app.use('/admin',adminRoutes);
+app.use('/empresa',empresaRoutes)
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

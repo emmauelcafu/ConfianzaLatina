@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Trabajo = require('../models/trabajos');  // Asegúrate de que la ruta es correcta
-const verifyToken = require('../middlewares/auth');
+const {verifyToken} = require('../middlewares/auth');
 
 // Crear trabajo
 router.post('/', verifyToken, async (req, res) => {

@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
         try {
             //has del password
             const hashedPassword = await bcrypt.hash(password, 10);
-            const nuevoUsuario = await Usuario.create({ nombre, email, password: hashedPassword });
+            const nuevoUsuario = await Usuario.create({ nombre, email, password: hashedPassword,role : 'empleado' });
             return nuevoUsuario
         } catch (error) {
             console.error('Error en registerController:', error)
