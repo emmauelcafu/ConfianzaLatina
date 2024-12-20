@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Usuario = require('./Usuario');
+const Usuario = require('./Usuario'); // Importar el modelo Usuario
 
 const PerfilUsuario = sequelize.define('PerfilUsuario', {
   nacionalidad: {
@@ -30,6 +30,16 @@ const PerfilUsuario = sequelize.define('PerfilUsuario', {
   idioma: {
     type: DataTypes.STRING,
     allowNull: true,
+  },
+  usuarioId: {
+    type: DataTypes.INTEGER,
+    allowNull: false, // Usuario obligatorio
+    references: {
+      model: Usuario, // Modelo asociado
+      key: 'id',      // Llave primaria de Usuario
+    },
+    onDelete: 'CASCADE', // Elimina el perfil si el usuario se elimina
+    onUpdate: 'CASCADE', // Actualiza el perfil si el usuario cambia
   },
 });
 

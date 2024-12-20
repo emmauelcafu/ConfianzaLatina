@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 // valida las autenticaciones.
 const verifyToken = (req, res, next) => {
