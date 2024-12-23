@@ -47,5 +47,6 @@ Trabajo.init({
 
 // Relación de 'Trabajo' con 'Usuario'
 Trabajo.belongsTo(Usuario, { foreignKey: 'usuarioId' });
+Postulacion.belongsTo(Trabajo, { foreignKey: 'trabajoId', as: 'trabajo' });
 
 module.exports = Trabajo;

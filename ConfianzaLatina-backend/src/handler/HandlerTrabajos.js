@@ -2,8 +2,6 @@ const {
     ControllersTrabajos,
     ControllersConsultaTrabajo,
     ControllersTrabajosPorUsuario,
-    ControllersPostularTrabajo,
-    ControllersPostulacionesTrabajo,
 } = require('../controllers/ControllersTrabajos');
 
 // Crear un trabajo

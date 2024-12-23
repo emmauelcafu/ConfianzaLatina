@@ -27,8 +27,6 @@ const HandlerPostularTrabajo = async (req, res) => {
         res.status(500).json({ mensaje: 'Error al postularse', error });
     }
 };
-
-// Manejar la lista de postulantes de un trabajo
 const HandlerPostulacionesTrabajo = async (req, res) => {
     const { trabajoId } = req.params; // ID del trabajo
     const usuarioId = req.user.id; // Usuario autenticado
@@ -40,17 +38,55 @@ const HandlerPostulacionesTrabajo = async (req, res) => {
             return res.status(403).json({ mensaje: 'No tienes permiso para ver las postulaciones de este trabajo' });
         }
 
-        // Obtener las postulaciones con datos de los usuarios postulados
+        // Obtener las postulaciones con datos de los usuarios postulados (solo id y nombre)
         const postulaciones = await Postulacion.findAll({
             where: { trabajoId },
-            include: [{ model: Usuario, attributes: ['id', 'nombre', 'correo'] }], // Incluir datos del usuario postulante
+            include: [
+                {
+                    model: Usuario,
+                    as: 'usuario', // Usar el alias correcto para Usuario
+                    attributes: ['id', 'nombre'] // Incluir solo id y nombre del usuario
+                },
+                {
+                    model: Trabajo,
+                    as: 'trabajo', // Alias de la relación con Trabajo (si lo tienes definido)
+                    attributes: ['id', 'nombre'] // Incluir solo los datos necesarios de Trabajo
+                }
+            ]
         });
 
-        res.json({ trabajoId, postulaciones });
+        // Responder con la lista de postulaciones
+        res.json({
+            trabajoId,
+            postulaciones: postulaciones.map(postulacion => {
+                const usuario = postulacion.usuario; // Aquí usamos el alias 'usuario'
+                const trabajo = postulacion.trabajo; // Aquí usamos el alias 'trabajo'
+
+                return {
+                    id: postulacion.id,
+                    usuarioId: postulacion.usuarioId,
+                    estado: postulacion.estado,
+                    createdAt: postulacion.createdAt,
+                    updatedAt: postulacion.updatedAt,
+                    usuario: {
+                        id: usuario.id,
+                        nombre: usuario.nombre
+                    },
+                    trabajo: {
+                        id: trabajo.id,
+                        nombre: trabajo.nombre
+                    } // Asegúrate de incluir solo los datos que necesitas
+                };
+            })
+        });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ mensaje: 'Error al listar postulaciones', error });
     }
 };
+
+
+
 
 module.exports = {
     HandlerPostularTrabajo,
