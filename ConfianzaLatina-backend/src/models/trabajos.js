@@ -1,52 +1,59 @@
 const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Ajusta la ruta de la configuración de tu base de datos
-const Usuario = require('../models/Usuario'); // Ajusta la ruta de tu modelo de Usuario
+const sequelize = require('../config/db');
+const Usuario = require('./Usuario'); // Asegúrate de que el modelo Usuario esté correctamente importado
 
 class Trabajo extends Model {}
 
-Trabajo.init({
-  titulo: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  descripcion: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  empresa: {
-    type: DataTypes.STRING, // Definiendo la columna empresa
-    allowNull: false,
-  },
-  ubicacion: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  salario: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  usuarioId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Usuario, // Referencia al modelo Usuario
-      key: 'id', // La columna en la tabla de Usuarios que estamos referenciando
+Trabajo.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    onDelete: 'CASCADE', // Si el Usuario es eliminado, los trabajos asociados también lo serán
+    titulo: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    descripcion: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    empresa: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    ubicacion: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    salario: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    usuarioId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Usuario, // Este debe coincidir con el modelo Usuario
+        key: 'id',
+      },
+    },
+    estado: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'activo',
+    },
   },
-  estado: {
-    type: DataTypes.STRING,
-    defaultValue: 'activo',
-  },
-}, {
-  sequelize,
-  modelName: 'Trabajo',
-  tableName: 'Trabajos', // Especificando el nombre de la tabla
-  timestamps: true, // Si estás usando createdAt y updatedAt
-});
+  {
+    sequelize,
+    modelName: 'Trabajo',
+    tableName: 'Trabajos', // Nombre de la tabla en plural
+    timestamps: true, // createdAt y updatedAt
+  }
+);
 
-// Relación de 'Trabajo' con 'Usuario'
-Trabajo.belongsTo(Usuario, { foreignKey: 'usuarioId' });
-Postulacion.belongsTo(Trabajo, { foreignKey: 'trabajoId', as: 'trabajo' });
+// Asociación con el modelo Usuario
+Trabajo.belongsTo(Usuario, { foreignKey: 'usuarioId', as: 'usuario' });
 
 module.exports = Trabajo;

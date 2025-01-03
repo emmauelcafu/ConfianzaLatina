@@ -1,14 +1,12 @@
+const sequelize = require('../config/db');
 const Usuario = require('./Usuario');
-const Reporte = require('./Reporte');
-const Trabajo = require('./trabajos'); // Agregar esta línea
+const Trabajo = require('./Trabajo');
+const Postulacion = require('./Postulacion');
 
-// Definir relaciones
-Usuario.hasMany(Reporte, { foreignKey: 'usuarioId' });
-Reporte.belongsTo(Usuario, { foreignKey: 'usuarioId' });
+// Registrar asociaciones
+Usuario.hasMany(Postulacion, { foreignKey: 'usuarioId' });
+Trabajo.hasMany(Postulacion, { foreignKey: 'trabajoId' });
+Postulacion.belongsTo(Usuario, { foreignKey: 'usuarioId' });
+Postulacion.belongsTo(Trabajo, { foreignKey: 'trabajoId' });
 
-// Exportar los modelos
-module.exports = {
-    Usuario,
-    Reporte,
-    Trabajo, // Exportar Trabajo
-};
+module.exports = { sequelize, Usuario, Trabajo, Postulacion };
