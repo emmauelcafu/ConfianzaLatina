@@ -1,55 +1,100 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { UserContext } from '../context/UserContext';
+import '../assets/styles/Login.css';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { updateUser } = useContext(UserContext);
+
+
+  const validateForm = () => {
+    if (!email || !password) {
+      setMessage('Por favor ingrese ambos campos.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    try {
+      const response = await axios.post('http://localhost:5000/auth/login', { email, password });
+     
+      
+      if (response.data.token) {
+        updateUser({
+          role: response.data.role,
+          name: response.data.nombre,
+          token: response.data.token,
+        
+        });
+       
+        
+        localStorage.setItem('token', response.data.token);
+        
+
+        navigate('/'); // Asegúrate de que la ruta de destino sea '/'
+      } else {
+        setMessage('Error: ' + response.data.mensaje);
+      }
+    } catch (error) {
+      setMessage('Error: ' + (error.response?.data?.mensaje || 'Algo salió mal'));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="login-container" style={styles.container}>
-      <h1 className="text-center" style={styles.header}>Login</h1>
-      <form style={styles.form}>
+    <div className="login-container container">
+      <h1 className="text-center mb-4">Iniciar sesión</h1>
+      <form className="form" onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="email" className="form-label">Email</label>
-          <input type="email" className="form-control" id="email" />
+          <label htmlFor="email" className="form-label">Correo electrónico</label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Escribe tu correo"
+          />
         </div>
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">Password</label>
-          <input type="password" className="form-control" id="password" />
+          <label htmlFor="password" className="form-label">Contraseña</label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Escribe tu contraseña"
+          />
         </div>
-        <button type="submit" className="btn btn-danger" style={styles.button}>Login</button>
+        <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+          {isLoading ? 'Cargando...' : 'Iniciar sesión'}
+        </button>
       </form>
+
+      <div className="text-center mt-3">
+        <p>
+          ¿No tienes cuenta?{' '}
+          <a href="/register" className="register-link">Regístrate aquí</a>
+        </p>
+      </div>
+
+      {message && <p className="message text-danger text-center">{message}</p>}
     </div>
   );
-};
-
-const styles = {
-  container: {
-    backgroundColor: '#f1f1f1',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    color: '#007bff',
-    fontSize: '2.5rem',
-    marginBottom: '20px',
-  },
-  form: {
-    width: '100%',
-    maxWidth: '400px',
-    padding: '20px',
-    backgroundColor: '#fff',
-    borderRadius: '8px',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-  },
-  button: {
-    backgroundColor: '#ff5722',
-    padding: '12px 25px',
-    fontSize: '1.2rem',
-    border: 'none',
-    borderRadius: '5px',
-    width: '100%',
-    transition: 'background-color 0.3s ease',
-  },
 };
 
 export default Login;

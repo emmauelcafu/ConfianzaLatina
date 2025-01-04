@@ -1,0 +1,57 @@
+.hero-section {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .carousel-inner img {
+    height: 60vh;
+    object-fit: cover;
+  }
+  
+  .carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: black;
+  }
+  
+  .carousel-control-prev, .carousel-control-next {
+    width: 5%;
+  }
+  
+  .hero-section h1 {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  
+  .hero-section p {
+    font-size: 1.2rem;
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+  
+  .card {
+    border-radius: 10px;
+  }
+  
+  .flag-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  .flag-icon.flag-hover:hover {
+    transform: scale(1.1);
+  }
+  
+  footer {
+    font-size: 0.9rem;
+  }
+  
+  .social-icons a {
+    text-decoration: none;
+  }
+  

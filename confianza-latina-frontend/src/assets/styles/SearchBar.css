@@ -1,0 +1,29 @@
+/* Barra de búsqueda */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .search-input {
+    width: 60%;  /* El campo de búsqueda ocupa el 60% del ancho */
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    margin-right: 10px;
+  }
+  
+  .search-container .btn-primary {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    background-color: #0066cc;
+    border: none;
+    color: white;
+  }
+  
+  .search-container .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  

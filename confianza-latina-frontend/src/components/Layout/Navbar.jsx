@@ -1,44 +1,86 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Asegúrate de que Bootstrap esté importado
-import { useState } from 'react';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Nav = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, updateUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const handleLogout = () => {
+    updateUser(null); // Limpia el estado del usuario
+    navigate('/login'); // Redirige al login
   };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/" style={{ fontWeight: 'bold' }}>MyApp</Link>
-        
-        {/* Botón de menú (hamburguesa) */}
-        <button 
-          className="navbar-toggler" 
-          type="button" 
-          onClick={toggleMenu} // Cuando se hace clic, se ejecuta la función toggleMenu
-          aria-controls="navbarNav" 
-          aria-expanded={isMenuOpen ? "true" : "false"}
+        <Link className="navbar-brand" to="/">Confianza Latina</Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-
-        {/* Menú desplegable */}
-        <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`} id="navbarNav">
+        <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
+            <li>
+            <Link className="nav-link text-white" to="/landingPage">Presentación</Link>
+
+            </li>
             <li className="nav-item">
               <Link className="nav-link text-white" to="/">Home</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link text-white" to="/login">Login</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link text-white" to="/register">Register</Link>
-            </li>
+            {!user?.role ? (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link text-white" to="/login">Login</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link text-white" to="/register">Register</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                {user?.role === 'empresa' && (
+                  <li className="nav-item">
+                    <Link className="nav-link text-white" to="/createJob">Publicar Trabajo</Link>
+                  </li>
+                )}
+                <li className="nav-item dropdown">
+                  <span
+                    className="nav-link dropdown-toggle text-white"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Hola, {user.name}
+                  </span>
+                  <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li>
+                      <Link className="dropdown-item" to="/perfilUsuario">Perfil</Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/editarPerfil">Editar Perfil</Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <button className="dropdown-item text-danger" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
@@ -47,6 +89,3 @@ const Nav = () => {
 };
 
 export default Nav;
-
-
-  
