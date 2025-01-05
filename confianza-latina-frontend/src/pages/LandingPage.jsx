@@ -14,8 +14,8 @@ const PaginaPrincipal = () => {
         <div id="carouselExample" className="carousel slide" data-bs-ride="carousel">
           <div className="carousel-inner">
             <div className="carousel-item active">
-              <img src={imagen1} className="d-block w-100" alt="Imagen1" />
-              <div className="carousel-caption d-none d-md-block">
+              <img src={imagen1} className="d-block w-100 hero-img" alt="Imagen1" />
+              <div className="carousel-caption d-flex flex-column justify-content-center align-items-center">
                 <h1 className="display-4 fw-bold">Bienvenido a Confianza Latina</h1>
                 <p className="lead">Conectamos personas y empleos en Polonia y Europa.</p>
                 <Link to="/">
@@ -24,8 +24,8 @@ const PaginaPrincipal = () => {
               </div>
             </div>
             <div className="carousel-item">
-              <img src={imagen2} className="d-block w-100" alt="Imagen 2" />
-              <div className="carousel-caption d-none d-md-block">
+              <img src={imagen2} className="d-block w-100 hero-img" alt="Imagen 2" />
+              <div className="carousel-caption d-flex flex-column justify-content-center align-items-center">
                 <h1 className="display-4 fw-bold">Confianza en cada paso</h1>
                 <p className="lead">Ayudamos a encontrar tu próximo trabajo en Europa.</p>
                 <Link to="/">
@@ -33,7 +33,6 @@ const PaginaPrincipal = () => {
                 </Link>
               </div>
             </div>
-            {/* Agregar más imágenes si es necesario */}
           </div>
           <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
