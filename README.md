@@ -39,11 +39,14 @@ Confianza Latina es una plataforma diseñada para conectar personas en búsqueda
 
 1. **Clona el repositorio**:
    ```bash
-   cd frontend
-npm install
-cd backend
-npm install
-npm start
-cd ../frontend
-npm start
+   git clone https://github.com/tu-usuario/confianza-latina.git](https://github.com/emmauelcafu/ConfianzaLatina.git
+   cd confianza-latina
+    cd frontend
+    npm install
+   cd backend
+    npm install
+     npm start
+    cd ../frontend
+    npm start
+
 
