@@ -1,4 +1,5 @@
 # Confianza Latina 🌍💼
+![img presentacion](./img/Captura de pantalla 2025-01-05 113057.png)
 
 **Facilitando la conexión entre personas y empleos en Polonia y Europa.**
 
