@@ -1,5 +1,5 @@
 # Confianza Latina 🌍💼
-![img presentacion](./img/Captura-de-pantalla-2025-01-05-113057.png)
+![img presentacion](./img/6.png)
 
 **Facilitando la conexión entre personas y empleos en Polonia y Europa.**
 
@@ -177,4 +177,4 @@ Este proyecto está licenciado bajo la MIT License.
 
 Equipo 👥
 Emmanuel Cafu - Desarrollador Full Stack.
- ![Descripción](./img/Captura de pantalla 2025-01-05 113057.png)
+ ![Descripción](./img/1.png)
