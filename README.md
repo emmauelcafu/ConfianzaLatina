@@ -177,3 +177,4 @@ Este proyecto está licenciado bajo la MIT License.
 
 Equipo 👥
 Emmanuel Cafu - Desarrollador Full Stack.
+ ![Descripción](./img/Captura de pantalla 2025-01-05 113057.png)
