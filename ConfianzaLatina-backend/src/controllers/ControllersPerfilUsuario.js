@@ -24,13 +24,15 @@ async function ControllerPerfilUsuario(data) {
 }
 // consultar ususario
 
-async function ControllerConsultarPerfilUsuario() {
+async function ControllerConsultarPerfilUsuario(usuarioId) {
   try {
-    const consultaUsuario = await PerfilUsuario.findAll();
-    return consultaUsuario;
+    const perfilUsuario = await PerfilUsuario.findOne({ where: { usuarioId } });
+    if (!perfilUsuario) {
+      throw new Error('Perfil no encontrado');
+    }
+    return perfilUsuario;
   } catch (error) {
-    console.error('Error al listar ControllerConsultarPerfilUsuario:', error);
-    res.status(500).json({mensaje:'Error al listar ControllerConsultarPerfilUsuario', error})
+    throw new Error('Error al consultar perfil: ' + error.message);
   }
 }
 

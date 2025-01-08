@@ -4,7 +4,7 @@ const {HandlerPerfilUsuario,HandlerConsultarPerfilUsuario}= require('../handler/
 
 const router = express.Router();
 
-router.post('/', verifyToken,HandlerPerfilUsuario);
+router.put('/', verifyToken,HandlerPerfilUsuario);
 router.get('/',verifyToken, HandlerConsultarPerfilUsuario);
 
 module.exports= router;

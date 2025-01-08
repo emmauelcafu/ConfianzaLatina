@@ -11,14 +11,14 @@ const PerfilUsuario = () => {
     nacionalidad: '',
     pasaporte: '',
     numeroTelefono: '',
-    disponibilidad: '', // Esto debe ser una opción de desplegable
+    disponibilidad: '',
     edad: '',
     sexo: '',
     idiomas: [], // Array para idiomas
   });
   const [message, setMessage] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-  const [newIdioma, setNewIdioma] = useState(''); // Variable para el nuevo idioma
+  const [newIdioma, setNewIdioma] = useState('');
 
   useEffect(() => {
     const fetchPerfil = async () => {
@@ -36,8 +36,9 @@ const PerfilUsuario = () => {
           },
         });
 
-        const perfilUsuario = response.data.find((p) => p.usuarioId === user.id);
-        if (perfilUsuario) {
+        const perfilUsuario = response.data;
+        console.log('Perfil recibido:', perfilUsuario);
+        if (perfilUsuario && perfilUsuario.usuarioId === user.id) {
           setPerfil(perfilUsuario);
         } else {
           setMessage('Perfil no encontrado');
@@ -55,8 +56,7 @@ const PerfilUsuario = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-  
-    // Validación de campos obligatorios
+
     let errorMessage = '';
     if (!perfil.nacionalidad) errorMessage += 'Nacionalidad, ';
     if (!perfil.pasaporte) errorMessage += 'Pasaporte, ';
@@ -65,42 +65,41 @@ const PerfilUsuario = () => {
     if (!perfil.edad) errorMessage += 'Edad, ';
     if (!perfil.sexo) errorMessage += 'Sexo, ';
     if (perfil.idiomas.length === 0) errorMessage += 'Idiomas, ';
-  
+
     if (errorMessage) {
       setMessage(`Los siguientes campos son obligatorios: ${errorMessage.slice(0, -2)}`);
       return;
     }
-  
-    // Validación de edad (debe ser mayor a 0)
+
     if (perfil.edad <= 0) {
       setMessage('La edad debe ser mayor a 0');
       return;
     }
-  
-    // Verificar si el ID está presente antes de enviar la solicitud
-    if (!perfil.id) {
+
+    if (!perfil.id && !perfil.usuarioId) {
       setMessage('No se pudo encontrar el perfil para actualizar');
       return;
     }
-  
+
     try {
-      await axios.put(`http://localhost:5000/perfilUsuario/${perfil.id}`, perfil, {
+      const perfilId = perfil.id || perfil.usuarioId;
+      const response = await axios.put(`http://localhost:5000/perfilUsuario/${perfilId}`, perfil, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
+        console.log('Respuesta del backend:', response.data); // Verifica la respuesta aquí
       setMessage('Perfil actualizado correctamente');
       setIsEditing(false);
     } catch (error) {
       setMessage('Error al actualizar el perfil');
     }
   };
-  
 
   const addIdioma = () => {
     if (newIdioma && !perfil.idiomas.includes(newIdioma)) {
       setPerfil({ ...perfil, idiomas: [...perfil.idiomas, newIdioma] });
-      setNewIdioma(''); // Limpiar el input después de añadir el idioma
+      setNewIdioma('');
     } else {
       setMessage('Idioma ya añadido o no válido');
     }
@@ -144,25 +143,24 @@ const PerfilUsuario = () => {
                   className="form-control"
                 >
                   <option value="">Selecciona una opción</option>
+                  <option value="Colombiana">Colombiana</option>
                   <option value="Argentina">Argentina</option>
-                  <option value="Bolivia">Bolivia</option>
-                  <option value="Brasil">Brasil</option>
-                  <option value="Chile">Chile</option>
-                  <option value="Colombia">Colombia</option>
-                  <option value="Costa Rica">Costa Rica</option>
-                  <option value="Cuba">Cuba</option>
-                  <option value="Ecuador">Ecuador</option>
-                  <option value="El Salvador">El Salvador</option>
-                  <option value="Guatemala">Guatemala</option>
-                  <option value="Honduras">Honduras</option>
-                  <option value="México">México</option>
-                  <option value="Nicaragua">Nicaragua</option>
-                  <option value="Panamá">Panamá</option>
-                  <option value="Paraguay">Paraguay</option>
-                  <option value="Perú">Perú</option>
-                  <option value="República Dominicana">República Dominicana</option>
-                  <option value="Uruguay">Uruguay</option>
-                  <option value="Venezuela">Venezuela</option>
+                  <option value="Brasilera">Brasilera</option>
+                  <option value="Mexicana">Mexicana</option>
+                  <option value="Chilena">Chilena</option>
+                  <option value="Peruana">Peruana</option>
+                  <option value="Ecuatoriana">Ecuatoriana</option>
+                  <option value="Uruguaya">Uruguaya</option>
+                  <option value="Venezolana">Venezolana</option>
+                  <option value="Polaca">Polaca</option>
+                  <option value="Ucraniana">Ucraniana</option>
+                  <option value="Española">Española</option>
+                  <option value="Francesa">Francesa</option>
+                  <option value="Italiana">Italiana</option>
+                  <option value="Alemana">Alemana</option>
+                  <option value="Inglesa">Inglesa</option>
+                  <option value="Portuguesa">Portuguesa</option>
+                  <option value="Rusa">Rusa</option>
                 </select>
               </div>
             </div>
@@ -179,15 +177,8 @@ const PerfilUsuario = () => {
                     <option value="">Selecciona un idioma</option>
                     <option value="Español">Español</option>
                     <option value="Inglés">Inglés</option>
-                    <option value="Portugués">Portugués</option>
-                    <option value="Francés">Francés</option>
-                    <option value="Alemán">Alemán</option>
-                    <option value="Italiano">Italiano</option>
                     <option value="Polaco">Polaco</option>
-                    <option value="Ucraniano">Ucraniano</option>
-                    <option value="Ruso">Ruso</option>
-                    <option value="Árabe">Árabe</option>
-                    <option value="Chino Mandarín">Chino Mandarín</option>
+                    <option value="Francés">Francés</option>
                   </select>
                   <button type="button" className="btn btn-secondary" onClick={addIdioma}>Agregar</button>
                 </div>
@@ -206,12 +197,12 @@ const PerfilUsuario = () => {
               <div className="form-group">
                 <label htmlFor="pasaporte">Pasaporte</label>
                 <input
-                  type="text"
                   id="pasaporte"
+                  type="text"
+                  className="form-control"
                   value={perfil.pasaporte}
                   onChange={(e) => setPerfil({ ...perfil, pasaporte: e.target.value })}
-                  placeholder="Ingrese su número de pasaporte"
-                  className="form-control"
+                  placeholder="Número de pasaporte"
                 />
               </div>
             </div>
@@ -219,12 +210,12 @@ const PerfilUsuario = () => {
               <div className="form-group">
                 <label htmlFor="numeroTelefono">Número de Teléfono</label>
                 <input
-                  type="text"
                   id="numeroTelefono"
+                  type="text"
+                  className="form-control"
                   value={perfil.numeroTelefono}
                   onChange={(e) => setPerfil({ ...perfil, numeroTelefono: e.target.value })}
-                  placeholder="Ingrese su número de teléfono"
-                  className="form-control"
+                  placeholder="Número de teléfono"
                 />
               </div>
             </div>
@@ -237,9 +228,9 @@ const PerfilUsuario = () => {
                   onChange={(e) => setPerfil({ ...perfil, disponibilidad: e.target.value })}
                   className="form-control"
                 >
-                  <option value="">Selecciona disponibilidad</option>
-                  <option value="Disponible">Disponible</option>
-                  <option value="No disponible">No disponible</option>
+                  <option value="">Selecciona una opción</option>
+                  <option value="Inmediata">Inmediata</option>
+                  <option value="1 mes">1 mes</option>
                 </select>
               </div>
             </div>
@@ -247,12 +238,12 @@ const PerfilUsuario = () => {
               <div className="form-group">
                 <label htmlFor="edad">Edad</label>
                 <input
-                  type="number"
                   id="edad"
+                  type="number"
+                  className="form-control"
                   value={perfil.edad}
                   onChange={(e) => setPerfil({ ...perfil, edad: e.target.value })}
-                  placeholder="Ingrese su edad"
-                  className="form-control"
+                  placeholder="Edad"
                 />
               </div>
             </div>
@@ -265,8 +256,9 @@ const PerfilUsuario = () => {
                   onChange={(e) => setPerfil({ ...perfil, sexo: e.target.value })}
                   className="form-control"
                 >
-                  <option value="F">Femenino</option>
+                  <option value="">Selecciona una opción</option>
                   <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
                 </select>
               </div>
             </div>

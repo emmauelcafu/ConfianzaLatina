@@ -17,6 +17,7 @@ const EditarPerfil = () => {
     idioma: '',
   });
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPerfil = async () => {
@@ -34,9 +35,18 @@ const EditarPerfil = () => {
           },
         });
 
-        const perfilUsuario = response.data.find((p) => p.usuarioId === user.id);
+        // Acceder directamente al perfil sin el .find()
+        const perfilUsuario = response.data;  // Asume que es un solo objeto
         if (perfilUsuario) {
-          setPerfil(perfilUsuario);
+          setPerfil({
+            nacionalidad: perfilUsuario.nacionalidad,
+            pasaporte: perfilUsuario.pasaporte,
+            numeroTelefono: perfilUsuario.numeroTelefono,
+            disponibilidad: perfilUsuario.disponibilidad,
+            edad: perfilUsuario.edad,
+            sexo: perfilUsuario.sexo,
+            idioma: perfilUsuario.idioma,
+          });
         } else {
           setMessage('Perfil no encontrado');
         }
@@ -52,17 +62,26 @@ const EditarPerfil = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);  // Estado de carga
+
     const token = localStorage.getItem('token');
     try {
-      await axios.put(`http://localhost:5000/perfilUsuario/${perfil.id}`, perfil, {
+      const response = await axios.put('http://localhost:5000/perfilUsuario', perfil, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
-      setMessage('Perfil actualizado correctamente');
-      navigate('/perfilUsuario');
+      
+      if (response.data.mensaje === 'Perfil actualizado') {
+        setMessage('Perfil actualizado correctamente');
+        navigate('/perfilUsuario');
+      } else {
+        setMessage('Error al actualizar el perfil');
+      }
     } catch (error) {
       setMessage('Error al actualizar el perfil');
+    } finally {
+      setLoading(false);  // Finaliza el estado de carga
     }
   };
 
@@ -107,7 +126,9 @@ const EditarPerfil = () => {
           value={perfil.idioma}
           onChange={(e) => setPerfil({ ...perfil, idioma: e.target.value })}
         />
-        <button type="submit">Guardar cambios</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Guardando...' : 'Guardar cambios'}
+        </button>
       </form>
       {message && <p>{message}</p>}
     </div>
@@ -115,3 +136,4 @@ const EditarPerfil = () => {
 };
 
 export default EditarPerfil;
+
