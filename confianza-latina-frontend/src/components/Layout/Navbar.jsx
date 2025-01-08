@@ -29,9 +29,8 @@ const Nav = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
-            <li>
-            <Link className="nav-link text-white" to="/landingPage">Presentación</Link>
-
+            <li className="nav-item">
+              <Link className="nav-link text-white" to="/landingPage">Presentación</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link text-white" to="/">Home</Link>
@@ -51,6 +50,16 @@ const Nav = () => {
                   <li className="nav-item">
                     <Link className="nav-link text-white" to="/createJob">Publicar Trabajo</Link>
                   </li>
+                )}
+                {(user?.role === 'admin' || user?.role === 'empresa') && (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link text-white" to="/crearNoticias">Crear Noticias</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link text-white" to="/consultarNoticias">Consultar Noticias</Link>
+                    </li>
+                  </>
                 )}
                 <li className="nav-item dropdown">
                   <span

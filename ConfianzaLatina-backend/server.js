@@ -3,20 +3,21 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const sequelize = require('./src/config/db'); // Asegúrate de conectar la base de datos
-
+const path = require('path');
 const authRoutes = require('./src/routes/auth');
 const reportRoutes = require('./src/routes/reportes');
 const trabajoRoutes = require('./src/routes/trabajos');
 const adminRoutes  = require('./src/routes/adminRoutes');
 const empresaRoutes = require('./src/routes/empresaRoutes');
 const perfilUsuario = require('./src/routes/perfilUsuarioRoutes');
+const noticias = require('./src/routes/noticiasRoutes')
 const postulaciones = require('./src/routes/postulacionesRoutes')
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // rutas 
 app.use('/auth', authRoutes);
 app.use('/reportes', reportRoutes);
@@ -25,7 +26,8 @@ app.use('/admin', adminRoutes);
 app.use('/empresa', empresaRoutes);
 app.use('/perfilUsuario', perfilUsuario);
 app.use('/postulaciones', postulaciones);
-
+app.use('/noticias', noticias);
+ 
 // Sincronizar la base de datos antes de iniciar el servidor
 (async () => {
     try {

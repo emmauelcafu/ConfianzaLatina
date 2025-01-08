@@ -7,7 +7,8 @@ import PerfilUsuario from './pages/PerfilUsuario';
 import CreateJob from './pages/CreateJob';
 import Nav from './components/Layout/Navbar'; // Asegúrate de importar el Nav
 import LandingPage from './pages/LandingPage'
-
+import CrearNoticias from './pages/CrearNoticias'
+import ConsultarNoticias from './pages/ConsultaNoticias'
 function App() {
   return (
     <Router>
@@ -21,6 +22,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/perfilUsuario" element={<PerfilUsuario />} />
           <Route path="/createJob" element={<CreateJob />} /> {/* Corrige el nombre de la ruta a "createJob" */}
+          <Route path="/crearNoticias" element={<CrearNoticias />} />
+          <Route path="/consultarNoticias" element={<ConsultarNoticias />} />
+
           {/* <Route path="/EditarPerfil" element={<EditarPerfil />} /> */}
           <Route path="/landingPage" element={<LandingPage />} />
         </Routes>
