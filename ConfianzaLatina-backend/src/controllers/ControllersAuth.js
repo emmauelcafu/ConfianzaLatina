@@ -39,7 +39,7 @@ const ControllerRegister = async ({ nombre, email, password, role }) => {
       console.error('Error en registerController:', error);
       throw new Error('No se pudo registrar al usuario.');
     }
-  };
+  };    
 
 module.exports = {
   ControllerRegister,
