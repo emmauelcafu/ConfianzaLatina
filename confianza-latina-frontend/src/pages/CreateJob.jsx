@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext'; // Importar el contexto
 import '../assets/styles/CreateJob.css';
+const URL = process.env.REACT_APP_API_URL;
 
 const CreateJob = () => {
   const { user } = useContext(UserContext); // Acceder al estado del usuario desde el contexto
@@ -25,7 +26,7 @@ const CreateJob = () => {
     }
   
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/trabajo`, {
+      const response = await axios.post(`${URL}/trabajo`, {
         titulo,
         descripcion,
         empresa,

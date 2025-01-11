@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../context/UserContext';
 import '../assets/styles/Login.css';
-
+const URL = process.env.REACT_APP_API_URL;
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,6 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { updateUser } = useContext(UserContext);
 
+ 
 
   const validateForm = () => {
     if (!email || !password) {
@@ -28,7 +29,7 @@ const Login = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, { email, password });
+      const response = await axios.post(`${URL}/auth/login`, { email, password });
      
       
       if (response.data.token) {

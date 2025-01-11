@@ -5,6 +5,7 @@ import '../assets/styles/LandingPage.css'; // Archivo CSS personalizado
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import imagen1 from '../assets/images/flags/hero-bg.jpg.jpg';
 import imagen2 from '../assets/images/flags/imagen2Header.jpg';
+const URL = process.env.REACT_APP_API_URL
 
 const PaginaPrincipal = () => {
   return (

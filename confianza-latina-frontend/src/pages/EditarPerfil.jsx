@@ -3,6 +3,7 @@ import axios from 'axios';
 import { UserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import '../assets/styles/PerfilUsuario.css';
+const URL = process.env.REACT_APP_API_URL;
 
 const EditarPerfil = () => {
   const { user } = useContext(UserContext);
@@ -29,7 +30,7 @@ const EditarPerfil = () => {
       }
 
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/perfilUsuario`, {
+        const response = await axios.get(`${URL}/perfilUsuario`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -66,7 +67,7 @@ const EditarPerfil = () => {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_URL}/perfilUsuario`, perfil, {
+      const response = await axios.put(`${URL}/perfilUsuario`, perfil, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext'; // Importar el contexto
 import '../assets/styles/CrearNoticias.css';
-
+const URL = process.env.REACT_APP_API_URL;
 const CreateNoticia = () => {
   const { user } = useContext(UserContext); // Acceder al estado del usuario desde el contexto
   const [titulo, setTitulo] = useState('');
@@ -13,6 +13,7 @@ const CreateNoticia = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState(''); // Para manejar los errores
   const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +39,7 @@ const CreateNoticia = () => {
     formData.append('imagen', imagen); // Agregar la imagen al FormData
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/noticias/crear`, formData, {
+      const response = await axios.post(`${URL}/noticias/crear`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data', // Indicar que estamos enviando un formulario con archivos

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { UserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import '../assets/styles/PerfilUsuario.css';
+const URL = process.env.REACT_APP_API_URL;
 
 const PerfilUsuario = () => {
   const { user } = useContext(UserContext);
@@ -30,7 +31,7 @@ const PerfilUsuario = () => {
       }
 
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/perfilUsuario`, {
+        const response = await axios.get(`${URL}/perfilUsuario`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -83,7 +84,7 @@ const PerfilUsuario = () => {
 
     try {
       const perfilId = perfil.id || perfil.usuarioId;
-      const response = await axios.put(`${process.env.REACT_APP_API_URL}/perfilUsuario/${perfilId}`, perfil, {
+      const response = await axios.put(`${URL}/perfilUsuario/${perfilId}`, perfil, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

@@ -10,12 +10,12 @@ const Register = () => {
   const [role, setRole] = useState('empresa');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
+  const URL = process.env.REACT_APP_API_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/registro`, { nombre, email, password, role });
+      const response = await axios.post(`${URL}/auth/registro`, { nombre, email, password, role });
 
       // Si la respuesta es exitosa, muestra un mensaje y redirige al login
       setMessage(response.data.mensaje);

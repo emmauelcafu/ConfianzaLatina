@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../assets/styles/ConsultarNoticias.css';
+const URL = process.env.REACT_APP_API_URL;
 
 const Noticias = () => {
   const [noticias, setNoticias] = useState([]);
@@ -11,7 +12,7 @@ const Noticias = () => {
   useEffect(() => {
     const fetchNoticias = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/noticias`); // Endpoint para obtener noticias
+        const response = await axios.get(`${URL}/noticias`); // Endpoint para obtener noticias
         setNoticias(response.data); // Guardar las noticias en el estado
       } catch (error) {
         console.error('Error al obtener noticias', error);

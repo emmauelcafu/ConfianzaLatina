@@ -3,6 +3,9 @@ import axios from 'axios';
 import SearchBar from '../components/Layout/SearchBar'; // Importa el componente SearchBar
 import '../assets/styles/Home.css';
 
+const URL = process.env.REACT_APP_API_URL;
+
+
 const Home = () => {
   const [trabajos, setTrabajos] = useState([]);
   const [message, setMessage] = useState('');
@@ -12,7 +15,7 @@ const Home = () => {
     const fetchTrabajos = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`https://confianzalatina.onrender.com/trabajo`, {
+        const response = await axios.get(`${URL}/trabajo`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
