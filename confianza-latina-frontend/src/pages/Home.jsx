@@ -12,7 +12,7 @@ const Home = () => {
     const fetchTrabajos = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/trabajo`, {
+        const response = await axios.get(`https://confianzalatina.onrender.com/trabajo`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
