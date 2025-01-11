@@ -29,7 +29,7 @@ const EditarPerfil = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/perfilUsuario', {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/perfilUsuario`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -66,7 +66,7 @@ const EditarPerfil = () => {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.put('http://localhost:5000/perfilUsuario', perfil, {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/perfilUsuario`, perfil, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

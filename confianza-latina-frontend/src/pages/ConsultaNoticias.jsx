@@ -11,7 +11,7 @@ const Noticias = () => {
   useEffect(() => {
     const fetchNoticias = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/noticias'); // Endpoint para obtener noticias
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/noticias`); // Endpoint para obtener noticias
         setNoticias(response.data); // Guardar las noticias en el estado
       } catch (error) {
         console.error('Error al obtener noticias', error);
@@ -41,7 +41,7 @@ const Noticias = () => {
         <div className="noticia-detalle">
           <h2>{selectedNoticia.titulo}</h2>
           <img
-            src={`http://localhost:5000/${formatImagePath(selectedNoticia.imagenRuta)}`}
+            src={`${process.env.REACT_APP_API_URL}/${formatImagePath(selectedNoticia.imagenRuta)}`}
             alt={selectedNoticia.titulo}
           />
           <p>
@@ -64,7 +64,7 @@ const Noticias = () => {
               onClick={() => handleSelectNoticia(noticia.id)}
             >
               <img
-                src={`http://localhost:5000/${formatImagePath(noticia.imagenRuta)}`}
+                src={`${process.env.REACT_APP_API_URL}/${formatImagePath(noticia.imagenRuta)}`}
                 alt={noticia.titulo}
                 className="noticia-img"
               />

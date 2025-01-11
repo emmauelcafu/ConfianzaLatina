@@ -38,7 +38,7 @@ const CreateNoticia = () => {
     formData.append('imagen', imagen); // Agregar la imagen al FormData
 
     try {
-      const response = await axios.post('http://localhost:5000/noticias/crear', formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/noticias/crear`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data', // Indicar que estamos enviando un formulario con archivos

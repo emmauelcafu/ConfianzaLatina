@@ -30,7 +30,7 @@ const PerfilUsuario = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/perfilUsuario', {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/perfilUsuario`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -83,7 +83,7 @@ const PerfilUsuario = () => {
 
     try {
       const perfilId = perfil.id || perfil.usuarioId;
-      const response = await axios.put(`http://localhost:5000/perfilUsuario/${perfilId}`, perfil, {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/perfilUsuario/${perfilId}`, perfil, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

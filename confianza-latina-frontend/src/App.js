@@ -6,9 +6,10 @@ import Register from './pages/Register';
 import PerfilUsuario from './pages/PerfilUsuario';
 import CreateJob from './pages/CreateJob';
 import Nav from './components/Layout/Navbar'; // Asegúrate de importar el Nav
-import LandingPage from './pages/LandingPage'
-import CrearNoticias from './pages/CrearNoticias'
-import ConsultarNoticias from './pages/ConsultaNoticias'
+import LandingPage from './pages/LandingPage';
+import CrearNoticias from './pages/CrearNoticias';
+import ConsultarNoticias from './pages/ConsultaNoticias';
+
 function App() {
   return (
     <Router>
@@ -17,16 +18,15 @@ function App() {
       
       <div className="container mt-5"> {/* Agrega algo de margen para separar el contenido del navbar */}
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Cambiar la ruta raíz a LandingPage */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/perfilUsuario" element={<PerfilUsuario />} />
           <Route path="/createJob" element={<CreateJob />} /> {/* Corrige el nombre de la ruta a "createJob" */}
           <Route path="/crearNoticias" element={<CrearNoticias />} />
           <Route path="/consultarNoticias" element={<ConsultarNoticias />} />
-
-          {/* <Route path="/EditarPerfil" element={<EditarPerfil />} /> */}
-          <Route path="/landingPage" element={<LandingPage />} />
         </Routes>
       </div>
     </Router>
@@ -34,4 +34,3 @@ function App() {
 }
 
 export default App;
-

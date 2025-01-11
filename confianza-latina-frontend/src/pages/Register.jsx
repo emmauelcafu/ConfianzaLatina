@@ -15,7 +15,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/auth/registro', { nombre, email, password, role });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/registro`, { nombre, email, password, role });
 
       // Si la respuesta es exitosa, muestra un mensaje y redirige al login
       setMessage(response.data.mensaje);

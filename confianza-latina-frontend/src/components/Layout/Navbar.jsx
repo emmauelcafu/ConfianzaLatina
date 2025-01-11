@@ -30,10 +30,10 @@ const Nav = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link className="nav-link text-white" to="/landingPage">Presentación</Link>
+              <Link className="nav-link text-white" to="/">Presentación</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-white" to="/">Home</Link>
+              <Link className="nav-link text-white" to="/home">Home</Link>
             </li>
             {!user?.role ? (
               <>
