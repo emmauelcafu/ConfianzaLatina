@@ -1,0 +1,67 @@
+/* Asegurémonos de que las imágenes no se estiren y sean de buena calidad */
+.hero-section {
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-img {
+  object-fit: cover; /* Para que las imágenes no se estiren */
+  height: 100vh; /* Aseguramos que la imagen tenga una altura completa */
+}
+
+.carousel-caption {
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Añadimos sombra para mejorar la visibilidad */
+}
+
+.hero-section h1 {
+  font-size: 3rem;
+}
+
+.hero-section .lead {
+  font-size: 1.5rem;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 576px) {
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+
+  .hero-section .lead {
+    font-size: 1.2rem;
+  }
+
+  .hero-section button {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+}
+
+/* Estilos para las banderas */
+.flag-icon {
+  transition: transform 0.3s ease;
+}
+
+.flag-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Estilos pie de página */
+.footer-section {
+  background-color: #343a40;
+}
+
+.social-icons a {
+  color: #fff;
+  font-size: 1.5rem;
+}
