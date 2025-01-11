@@ -1,12 +1,18 @@
 const { Sequelize } = require('sequelize');
+require('dotenv').config(); // Carga las variables del archivo .env
 
 // Configuración de la conexión a PostgreSQL
-const sequelize = new Sequelize('confianza_latina', 'postgres', 'admin', {
-    host: 'localhost',      // Cambia si usas una IP o servidor remoto
-    dialect: 'postgres',    // Dialecto que estás usando
-    port: 5432,             // Puerto de tu servidor PostgreSQL
-    logging: false,         // Cambiar a true para ver las consultas SQL en la consola
-});
+const sequelize = new Sequelize(
+    process.env.DB_NAME,       // Nombre de la base de datos
+    process.env.DB_USER,       // Usuario
+    process.env.DB_PASSWORD,   // Contraseña
+    {
+        host: process.env.DB_HOST,   // Host (localhost o IP del servidor)
+        dialect: 'postgres',         // Dialecto que estás usando
+        port: process.env.DB_PORT,   // Puerto de tu servidor PostgreSQL
+        logging: false,              // Cambiar a true para ver las consultas SQL
+    }
+);
 
 // Probar la conexión
 (async () => {
