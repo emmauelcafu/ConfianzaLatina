@@ -1,74 +1,108 @@
-/* Login - Estilo general */
 .login-container {
-  background-color: #f4f6f9;
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  min-height: 100vh;
+  background: #f8f9fa;
 }
 
-.text-center {
-  font-size: 2rem;
-  color: #0073b1;
-  font-weight: 600;
-  margin-bottom: 30px;
-}
-
-.form {
+.auth-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.form-label {
-  font-size: 1rem;
-  color: #333333;
+.form-title {
+  text-align: center;
+  color: #2557a7;
+  margin-bottom: 2rem;
 }
 
-.form-control {
-  font-size: 1rem;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
 }
 
-button {
+.form-group label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: #495057;
+  font-weight: 500;
+}
+
+.input-icon {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.form-input {
   width: 100%;
-  font-size: 1.1rem;
-  padding: 12px;
-  background-color: #0073b1;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-input:focus {
+  border-color: #2557a7;
+  box-shadow: 0 0 0 3px rgba(37, 87, 167, 0.25);
+}
+
+.has-error .form-input {
+  border-color: #dc3545;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #2557a7;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-button:hover {
-  background-color: #005f8c;
+.submit-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }
 
-button:disabled {
-  background-color: #b0c9e3;
-}
-
-.message {
-  color: #d9534f;
+.form-footer {
   text-align: center;
-  font-size: 0.9rem;
-  margin-top: 15px;
+  margin-top: 1rem;
+  color: #6c757d;
 }
 
-.register-link {
-  color: #0073b1;
+.auth-link {
+  color: #2557a7;
   text-decoration: none;
+  font-weight: 500;
 }
 
-.register-link:hover {
+.auth-link:hover {
   text-decoration: underline;
+}
+
+.password-reset {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.general-error {
+  text-align: center;
+  margin: 1rem 0;
 }

@@ -2,77 +2,100 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../assets/styles/ConsultarNoticias.css';
+
 const URL = process.env.REACT_APP_API_URL;
 
 const Noticias = () => {
   const [noticias, setNoticias] = useState([]);
-  const [selectedNoticia, setSelectedNoticia] = useState(null); // Para los detalles de la noticia seleccionada
+  const [selectedNoticia, setSelectedNoticia] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNoticias = async () => {
       try {
-        const response = await axios.get(`${URL}/noticias`); // Endpoint para obtener noticias
-        setNoticias(response.data); // Guardar las noticias en el estado
+        const response = await axios.get(`${URL}/noticias`);
+        setNoticias(response.data);
       } catch (error) {
-        console.error('Error al obtener noticias', error);
+        setError('Error al cargar las noticias. Intente nuevamente.');
+        console.error('Error:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchNoticias(); // Llamar a la función para obtener las noticias
+    fetchNoticias();
   }, []);
 
+  const formatImagePath = (path) => {
+    if (!path) return '';
+    return path.replace(/\\/g, '/');
+  };
+
   const handleSelectNoticia = (id) => {
-    // Filtrar la noticia seleccionada y establecerla en el estado
     const noticia = noticias.find((n) => n.id === id);
     setSelectedNoticia(noticia);
   };
 
-  const formatImagePath = (path) => {
-    // Reemplazar las barras invertidas por barras normales
-    return path.replace(/\\/g, '/');
-  };
+  if (isLoading) {
+    return <div className="loading">Cargando noticias...</div>;
+  }
+
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
 
   return (
-    <div className="noticias-container">
-      <h1 className="text-center">Noticias</h1>
+    <div className="consultar-noticias-container">
+      <h1 className="title">Noticias</h1>
 
-      {/* Si se seleccionó una noticia, mostrar los detalles */}
-      {selectedNoticia ? (
-        <div className="noticia-detalle">
-          <h2>{selectedNoticia.titulo}</h2>
-          <img
-            src={`${process.env.REACT_APP_API_URL}/${formatImagePath(selectedNoticia.imagenRuta)}`}
-            alt={selectedNoticia.titulo}
-          />
-          <p>
-            <strong>Autor:</strong> {selectedNoticia.autor}
-          </p>
-          <p>
-            <strong>Fecha de creación:</strong> {new Date(selectedNoticia.fechaCreacion).toLocaleDateString()}
-          </p>
-          <p>{selectedNoticia.contenido}</p>
-          <button onClick={() => setSelectedNoticia(null)} className="btn btn-secondary">
-            Cerrar
-          </button>
-        </div>
-      ) : (
-        <div className="noticias-list">
-          {noticias.map((noticia) => (
-            <div
-              key={noticia.id}
-              className="noticia-item"
-              onClick={() => handleSelectNoticia(noticia.id)}
-            >
+      <div className="noticias-list">
+        {noticias.map((noticia) => (
+          <div
+            key={noticia.id}
+            className="noticia-card"
+            onClick={() => handleSelectNoticia(noticia.id)}
+          >
+            {noticia.imagen && (
               <img
-                src={`${process.env.REACT_APP_API_URL}/${formatImagePath(noticia.imagenRuta)}`}
+                src={formatImagePath(noticia.imagen)}
                 alt={noticia.titulo}
-                className="noticia-img"
+                className="noticia-image"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
               />
-              <h3>{noticia.titulo}</h3>
-              <p>{noticia.contenido.substring(0, 100)}...</p>
-            </div>
-          ))}
+            )}
+            <h2 className="noticia-title">{noticia.titulo}</h2>
+            <p className="noticia-content">
+              {noticia.contenido?.substring(0, 100) || 'Descripción no disponible'}...
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {selectedNoticia && (
+        <div className="noticia-detalles">
+          <button 
+            className="close-button"
+            onClick={() => setSelectedNoticia(null)}
+          >
+            ×
+          </button>
+          <h2>{selectedNoticia.titulo}</h2>
+          {selectedNoticia.imagen && (
+            <img
+              src={formatImagePath(selectedNoticia.imagen)}
+              alt={selectedNoticia.titulo}
+              className="detalles-image"
+            />
+          )}
+          <p><strong>Autor:</strong> {selectedNoticia.autor || 'Anónimo'}</p>
+          <p><strong>Fecha:</strong> {new Date(selectedNoticia.fechaCreacion).toLocaleDateString()}</p>
+          <p className="detalles-content">
+            {selectedNoticia.contenido || 'Contenido no disponible'}
+          </p>
         </div>
       )}
     </div>

@@ -1,126 +1,185 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext'; // Importar el contexto
+import { UserContext } from '../context/UserContext';
 import '../assets/styles/CreateJob.css';
+
 const URL = process.env.REACT_APP_API_URL;
 
 const CreateJob = () => {
-  const { user } = useContext(UserContext); // Acceder al estado del usuario desde el contexto
-  const [titulo, setTitulo] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [empresa, setEmpresa] = useState('');
-  const [ubicacion, setUbicacion] = useState('');
-  const [salario, setSalario] = useState('');
+  const { user } = useContext(UserContext);
+  const [formData, setFormData] = useState({
+    titulo: '',
+    descripcion: '',
+    empresa: '',
+    ubicacion: '',
+    salario: ''
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
+  const validateField = (name, value) => {
+    const newErrors = { ...errors };
+
+    if (name === 'titulo' && (!value || value.length < 3)) {
+      newErrors.titulo = 'El título debe tener al menos 3 caracteres';
+    } else {
+      delete newErrors.titulo;
+    }
+
+    if (name === 'descripcion' && (!value || value.length < 10)) {
+      newErrors.descripcion = 'La descripción debe tener al menos 10 caracteres';
+    } else {
+      delete newErrors.descripcion;
+    }
+
+    if (name === 'empresa' && !value) {
+      newErrors.empresa = 'El nombre de la empresa es requerido';
+    } else {
+      delete newErrors.empresa;
+    }
+
+    if (name === 'ubicacion' && !value) {
+      newErrors.ubicacion = 'La ubicación es requerida';
+    } else {
+      delete newErrors.ubicacion;
+    }
+
+    if (name === 'salario' && (!value || isNaN(value))) {
+      newErrors.salario = 'El salario debe ser un número válido';
+    } else {
+      delete newErrors.salario;
+    }
+
+    setErrors(newErrors);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+    validateField(name, value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const token = user.token; // Usar el token del contexto
-    if (!token) {
-      setMessage('Error: No estás autenticado');
-      navigate('/login'); // Redirigir al login si no hay token
-      return;
-    }
-  
+    
+    // Validar todos los campos antes de enviar
+    Object.keys(formData).forEach((field) => validateField(field, formData[field]));
+    
+    if (Object.keys(errors).length > 0) return;
+
+    setIsSubmitting(true);
+    
     try {
-      const response = await axios.post(`${URL}/trabajo`, {
-        titulo,
-        descripcion,
-        empresa,
-        ubicacion,
-        salario
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const token = user.token;
+      if (!token) {
+        setMessage('Error: No estás autenticado');
+        navigate('/login');
+        return;
+      }
+
+      await axios.post(`${URL}/trabajo`, formData, {
+        headers: { Authorization: `Bearer ${token}` }
       });
-  
-      // Aquí actualizamos el estado del trabajo en la UI, si lo deseas
-      setMessage('Trabajo publicado con éxito');
-      setTimeout(() => {
-        navigate('/'); // Redirige a la página de inicio después de un segundo
-      }, 2000);
       
-      // Si quieres, puedes actualizar el estado con el nuevo trabajo recibido
-      // Esto depende de cómo estés gestionando la lista de trabajos en el frontend.
-      // Por ejemplo, si tienes un estado de trabajos, actualízalo aquí.
-  
+      setMessage('Trabajo publicado con éxito');
+      setTimeout(() => navigate('/'), 2000);
+      
     } catch (error) {
       setMessage('Error: ' + (error.response?.data?.mensaje || 'Algo salió mal'));
+    } finally {
+      setIsSubmitting(false);
     }
   };
-  
 
   return (
     <div className="create-job-container">
-      <h1 className="text-center">Crear Publicación de Trabajo</h1>
-      <form className="form" onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="titulo" className="form-label">Título</label>
+      <form onSubmit={handleSubmit} className="create-job-form">
+        <h2 className="form-title">Publicar Trabajo</h2>
+
+        <div className={`form-group ${errors.titulo ? 'has-error' : ''}`}>
+          <label htmlFor="titulo">Título del Trabajo</label>
           <input
             type="text"
-            className="form-control"
             id="titulo"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-            placeholder="Título del trabajo"
-            required
+            name="titulo"
+            value={formData.titulo}
+            onChange={handleInputChange}
+            className="form-input"
           />
+          {errors.titulo && <span className="error-message">{errors.titulo}</span>}
         </div>
-        <div className="mb-3">
-          <label htmlFor="descripcion" className="form-label">Descripción</label>
+
+        <div className={`form-group ${errors.descripcion ? 'has-error' : ''}`}>
+          <label htmlFor="descripcion">Descripción</label>
           <textarea
-            className="form-control"
             id="descripcion"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-            placeholder="Descripción del trabajo"
-            required
-          />
+            name="descripcion"
+            value={formData.descripcion}
+            onChange={handleInputChange}
+            className="form-textarea"
+          ></textarea>
+          {errors.descripcion && <span className="error-message">{errors.descripcion}</span>}
         </div>
-        <div className="mb-3">
-          <label htmlFor="empresa" className="form-label">Empresa</label>
+
+        <div className={`form-group ${errors.empresa ? 'has-error' : ''}`}>
+          <label htmlFor="empresa">Nombre de la Empresa</label>
           <input
             type="text"
-            className="form-control"
             id="empresa"
-            value={empresa}
-            onChange={(e) => setEmpresa(e.target.value)}
-            placeholder="Nombre de la empresa"
-            required
+            name="empresa"
+            value={formData.empresa}
+            onChange={handleInputChange}
+            className="form-input"
           />
+          {errors.empresa && <span className="error-message">{errors.empresa}</span>}
         </div>
-        <div className="mb-3">
-          <label htmlFor="ubicacion" className="form-label">Ubicación</label>
+
+        <div className={`form-group ${errors.ubicacion ? 'has-error' : ''}`}>
+          <label htmlFor="ubicacion">Ubicación</label>
           <input
             type="text"
-            className="form-control"
             id="ubicacion"
-            value={ubicacion}
-            onChange={(e) => setUbicacion(e.target.value)}
-            placeholder="Ubicación del trabajo"
-            required
+            name="ubicacion"
+            value={formData.ubicacion}
+            onChange={handleInputChange}
+            className="form-input"
           />
+          {errors.ubicacion && <span className="error-message">{errors.ubicacion}</span>}
         </div>
-        <div className="mb-3">
-          <label htmlFor="salario" className="form-label">Salario</label>
+
+        <div className={`form-group ${errors.salario ? 'has-error' : ''}`}>
+          <label htmlFor="salario">Salario</label>
           <input
             type="number"
-            className="form-control"
             id="salario"
-            value={salario}
-            onChange={(e) => setSalario(e.target.value)}
-            placeholder="Salario ofrecido"
-            required
+            name="salario"
+            value={formData.salario}
+            onChange={handleInputChange}
+            className="form-input"
           />
+          {errors.salario && <span className="error-message">{errors.salario}</span>}
         </div>
-        <button type="submit" className="btn btn-danger">Publicar Trabajo</button>
-      </form>
 
-      {message && <p className="message">{message}</p>}
+        {message && (
+          <div className={`message ${isSubmitting ? 'loading' : ''}`}>
+            {message}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          className={`submit-button ${isSubmitting ? 'disabled' : ''}`}
+          disabled={isSubmitting || Object.keys(errors).length > 0}
+        >
+          {isSubmitting ? 'Publicando...' : 'Publicar Trabajo'}
+        </button>
+      </form>
     </div>
   );
 };

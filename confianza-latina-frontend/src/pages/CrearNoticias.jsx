@@ -3,28 +3,55 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext'; // Importar el contexto
 import '../assets/styles/CrearNoticias.css';
+
 const URL = process.env.REACT_APP_API_URL;
-const CreateNoticia = () => {
+
+const CrearNoticias = () => {
   const { user } = useContext(UserContext); // Acceder al estado del usuario desde el contexto
-  const [titulo, setTitulo] = useState('');
-  const [contenido, setContenido] = useState('');
-  const [autor, setAutor] = useState('');
-  const [imagen, setImagen] = useState(null); // Para manejar la imagen
+  const [formData, setFormData] = useState({
+    titulo: '',
+    contenido: '',
+    autor: '',
+    imagen: null,
+  });
   const [message, setMessage] = useState('');
-  const [error, setError] = useState(''); // Para manejar los errores
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // Manejo del estado de envío
   const navigate = useNavigate();
 
+  const validateFields = () => {
+    if (!formData.titulo || !formData.contenido || !formData.autor || !formData.imagen) {
+      setError('Todos los campos son obligatorios, incluyendo la imagen.');
+      return false;
+    }
+    if (formData.imagen && formData.imagen.size > 5 * 1024 * 1024) {
+      setError('La imagen no debe superar los 5MB.');
+      return false;
+    }
+    setError('');
+    return true;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      imagen: e.target.files[0],
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateFields()) return;
 
-    // Verificar si todos los campos están completos
-    if (!titulo || !contenido || !autor || !imagen) {
-      setError('Todos los campos son obligatorios, incluyendo la imagen.');
-      return;
-    }
-
-    const token = user.token; // Usar el token del contexto
+    const token = user?.token;
     if (!token) {
       setMessage('Error: No estás autenticado');
       navigate('/login'); // Redirigir al login si no hay token
@@ -32,86 +59,102 @@ const CreateNoticia = () => {
     }
 
     // Crear el objeto FormData para enviar los datos y el archivo
-    const formData = new FormData();
-    formData.append('titulo', titulo);
-    formData.append('contenido', contenido);
-    formData.append('autor', autor);
-    formData.append('imagen', imagen); // Agregar la imagen al FormData
+    const data = new FormData();
+    data.append('titulo', formData.titulo);
+    data.append('contenido', formData.contenido);
+    data.append('autor', formData.autor);
+    data.append('imagen', formData.imagen);
 
     try {
-      const response = await axios.post(`${URL}/noticias/crear`, formData, {
+      setIsSubmitting(true);
+      await axios.post(`${URL}/noticias/crear`, data, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data', // Indicar que estamos enviando un formulario con archivos
-        }
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       // Si la noticia se crea con éxito
       setMessage('Noticia creada exitosamente');
-      setTimeout(() => {
-        navigate('/consultarNoticias'); // Redirige a la página de inicio después de un segundo
-      }, 2000);
+      setTimeout(() => navigate('/consultarNoticias'), 2000); // Redirige después de un segundo
     } catch (error) {
       setMessage('Error: ' + (error.response?.data?.mensaje || 'Algo salió mal'));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="create-job-container">
-      <h1 className="text-center">Crear Noticia</h1>
-      <form className="form" onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="titulo" className="form-label">Título</label>
+    <div className="crear-noticia-container">
+      <form onSubmit={handleSubmit} className="crear-noticia-form">
+        <h2 className="form-title">Crear Noticia</h2>
+
+        {/* Campo Título */}
+        <div className={`form-group ${error && !formData.titulo ? 'has-error' : ''}`}>
+          <label htmlFor="titulo">Título</label>
           <input
             type="text"
-            className="form-control"
             id="titulo"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-            placeholder="Título de la noticia"
-            required
+            name="titulo"
+            value={formData.titulo}
+            onChange={handleInputChange}
+            className="form-input"
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="contenido" className="form-label">Contenido</label>
+
+        {/* Campo Contenido */}
+        <div className={`form-group ${error && !formData.contenido ? 'has-error' : ''}`}>
+          <label htmlFor="contenido">Contenido</label>
           <textarea
-            className="form-control"
             id="contenido"
-            value={contenido}
-            onChange={(e) => setContenido(e.target.value)}
-            placeholder="Contenido de la noticia"
-            required
-          />
+            name="contenido"
+            value={formData.contenido}
+            onChange={handleInputChange}
+            className="form-textarea"
+          ></textarea>
         </div>
-        <div className="mb-3">
-          <label htmlFor="autor" className="form-label">Autor</label>
+
+        {/* Campo Autor */}
+        <div className={`form-group ${error && !formData.autor ? 'has-error' : ''}`}>
+          <label htmlFor="autor">Autor</label>
           <input
             type="text"
-            className="form-control"
             id="autor"
-            value={autor}
-            onChange={(e) => setAutor(e.target.value)}
-            placeholder="Autor de la noticia"
-            required
+            name="autor"
+            value={formData.autor}
+            onChange={handleInputChange}
+            className="form-input"
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="imagen" className="form-label">Imagen</label>
+
+        {/* Campo Imagen */}
+        <div className={`form-group ${error && !formData.imagen ? 'has-error' : ''}`}>
+          <label htmlFor="imagen">Imagen</label>
           <input
             type="file"
-            className="form-control"
             id="imagen"
-            onChange={(e) => setImagen(e.target.files[0])}
-            required // Ahora es obligatorio
+            name="imagen"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="form-input"
           />
         </div>
-        <button type="submit" className="btn-success">Crear Noticia</button>
-      </form>
 
-      {error && <p className="text-danger">{error}</p>} {/* Mostrar error si algún campo está vacío */}
-      {message && <p className="message">{message}</p>}
+        {/* Mensajes */}
+        {error && <div className="error-message">{error}</div>}
+        {message && (
+          <div className={`message ${message.includes('exitosamente') ? 'success' : 'error'}`}>
+            {message}
+          </div>
+        )}
+
+        {/* Botón Enviar */}
+        <button type="submit" className={`submit-button ${isSubmitting ? 'disabled' : ''}`} disabled={isSubmitting}>
+          {isSubmitting ? 'Creando...' : 'Crear Noticia'}
+        </button>
+      </form>
     </div>
   );
 };
 
-export default CreateNoticia;
+export default CrearNoticias;

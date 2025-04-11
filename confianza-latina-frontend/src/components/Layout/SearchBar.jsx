@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../assets/styles/SearchBar.css';  // Estilo que ya mencionamos
+import '../../assets/styles/SearchBar.css'; // Importa los estilos
 
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,18 +16,19 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className="search-container">
-      <form onSubmit={handleSubmit} className="w-100">
-        <input
-          type="text"
-          placeholder="Buscar trabajos..."
-          className="form-control search-input"
-          value={searchTerm}
-          onChange={handleChange}
-        />
-        <button type="submit" className="btn btn-primary">Buscar</button>
-      </form>
-    </div>
+    <form className="search-bar" onSubmit={handleSubmit} role="search">
+      <input
+        type="text"
+        className="search-input"
+        placeholder="Buscar..."
+        value={searchTerm}
+        onChange={handleChange}
+        aria-label="Buscar"
+      />
+      <button type="submit" className="search-button">
+        Buscar
+      </button>
+    </form>
   );
 };
 

@@ -1,108 +1,60 @@
-/* src/assets/styles/Home.css */
-
-/* Fondo principal */
 .home-container {
-  background-color: #f4f7fb;  /* Gris claro similar al fondo de Indeed */
-  padding-top: 30px;
-  padding-bottom: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
-/* Títulos y encabezados */
-h1 {
-  font-size: 2.5rem;
-  color: #2e3a59; /* Azul oscuro para el título principal */
-  font-weight: 600;
-  margin-bottom: 30px;
+.main-title {
+  text-align: center;
+  color: #2557a7;
+  margin-bottom: 2rem;
 }
 
-.filters {
-  background-color: #ffffff;
-  padding: 20px;
+.jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.job-card {
+  background: #fff;
   border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Tarjetas de trabajos */
-.card {
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  margin-bottom: 25px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.job-description {
+  color: #666;
+  margin: 1rem 0;
 }
 
-.card:hover {
-  transform: translateY(-5px); /* Efecto sutil de hover */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+.job-details p {
+  margin: 0.5rem 0;
 }
 
-.card-body {
-  padding: 20px;
+.apply-button {
+  display: inline-block;
+  background: #2557a7;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-top: 1rem;
 }
 
-.card-title {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #2e3a59;
+.error-message {
+  color: #dc3545;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: #ffe6e6;
+  border-radius: 4px;
+  text-align: center;
 }
 
-.card p {
-  font-size: 1rem;
-  color: #6c757d; /* Gris suave para los textos */
-}
-
-.card .btn-primary {
-  width: 100%;
-  background-color: #0066cc;
-  border: none;
-  padding: 12px;
-  font-size: 1.1rem;
-  border-radius: 5px;
-  color: #ffffff;
-  transition: background-color 0.3s ease;
-}
-
-.card .btn-primary:hover {
-  background-color: #0056b3; /* Botón con efecto hover */
-}
-
-.trabajos-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.trabajos-list .card {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.trabajos-list .card:nth-child(2n) {
-  margin-right: 2%;
-}
-
-@media (min-width: 768px) {
-  .trabajos-list .card {
-    width: 48%;  /* Aumentar el tamaño de las tarjetas en pantallas más grandes */
-    margin-right: 2%;
-  }
-
-  .trabajos-list .card:nth-child(2n) {
-    margin-right: 0;
-  }
-}
-
-/* Texto adicional (Ubicación, descripción, etc.) */
-.text-muted {
-  font-size: 1.1rem;
-  color: #868e96;
-}
-
-.alert {
-  font-size: 1.1rem;
-  padding: 15px;
-  margin-bottom: 20px;
-  background-color: #f8d7da;
-  color: #721c24;
+.empty-state {
+  text-align: center;
+  color: #666;
+  font-size: 1.2rem;
+  grid-column: 1 / -1;
+  padding: 2rem;
 }

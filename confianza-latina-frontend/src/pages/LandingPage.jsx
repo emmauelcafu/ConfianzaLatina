@@ -2,10 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/styles/LandingPage.css'; // Archivo CSS personalizado
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import imagen1 from '../assets/images/flags/hero-bg.jpg.jpg';
-import imagen2 from '../assets/images/flags/imagen2Header.jpg';
-const URL = process.env.REACT_APP_API_URL
+import '@fortawesome/fontawesome-free/css/all.min.css'; // Iconos Font Awesome
+import heroBg from '../assets/images/flags/hero-bg.jpg.jpg'; // Imagen corregida
+import imagen2Header from '../assets/images/flags/imagen2Header.jpg'; // Imagen adicional
 
 const PaginaPrincipal = () => {
   return (
@@ -15,7 +14,7 @@ const PaginaPrincipal = () => {
         <div id="carouselExample" className="carousel slide" data-bs-ride="carousel">
           <div className="carousel-inner">
             <div className="carousel-item active">
-              <img src={imagen1} className="d-block w-100 hero-img" alt="Imagen1" />
+              <img src={heroBg} className="d-block w-100 hero-img" alt="Imagen1" />
               <div className="carousel-caption d-flex flex-column justify-content-center align-items-center">
                 <h1 className="display-4 fw-bold">Bienvenido a Confianza Latina</h1>
                 <p className="lead">Conectamos personas y empleos en Polonia y Europa.</p>
@@ -25,7 +24,7 @@ const PaginaPrincipal = () => {
               </div>
             </div>
             <div className="carousel-item">
-              <img src={imagen2} className="d-block w-100 hero-img" alt="Imagen 2" />
+              <img src={imagen2Header} className="d-block w-100 hero-img" alt="Imagen 2" />
               <div className="carousel-caption d-flex flex-column justify-content-center align-items-center">
                 <h1 className="display-4 fw-bold">Confianza en cada paso</h1>
                 <p className="lead">Ayudamos a encontrar tu próximo trabajo en Europa.</p>
@@ -76,45 +75,14 @@ const PaginaPrincipal = () => {
         </div>
       </section>
 
-      {/* Sección con banderas y expansión */}
-      <section className="expansion-section bg-light py-5">
-        <div className="container text-center">
-          <h2 className="fw-bold mb-4">Expandiéndonos en Europa</h2>
-          <p>Ayudamos a encontrar trabajo en los siguientes países:</p>
-          <div className="row justify-content-center mt-4">
-            <div className="col-4 col-md-2 mb-3">
-              <i className="flag-icon flag-icon-pl flag-hover" style={{ fontSize: '50px' }}></i>
-            </div>
-            <div className="col-4 col-md-2 mb-3">
-              <i className="flag-icon flag-icon-de flag-hover" style={{ fontSize: '50px' }}></i>
-            </div>
-            <div className="col-4 col-md-2 mb-3">
-              <i className="flag-icon flag-icon-gb flag-hover" style={{ fontSize: '50px' }}></i>
-            </div>
-            <div className="col-4 col-md-2 mb-3">
-              <i className="flag-icon flag-icon-fr flag-hover" style={{ fontSize: '50px' }}></i>
-            </div>
-            <div className="col-4 col-md-2 mb-3">
-              <i className="flag-icon flag-icon-es flag-hover" style={{ fontSize: '50px' }}></i>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Pie de página */}
       <footer className="footer-section bg-dark text-white py-4">
         <div className="container text-center">
-          <p className="mb-2">&copy; {new Date().getFullYear()} Confianza Latina. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Confianza Latina. Todos los derechos reservados.</p>
           <div className="social-icons d-flex justify-content-center">
-            <a href="https://facebook.com" className="text-white mx-3" aria-label="Facebook">
-              <i className="fab fa-facebook fa-lg"></i>
-            </a>
-            <a href="https://twitter.com" className="text-white mx-3" aria-label="Twitter">
-              <i className="fab fa-twitter fa-lg"></i>
-            </a>
-            <a href="https://instagram.com" className="text-white mx-3" aria-label="Instagram">
-              <i className="fab fa-instagram fa-lg"></i>
-            </a>
+            <a href="#" aria-label="Facebook"><i className="fab fa-facebook fa-lg mx-2"></i></a>
+            <a href="#" aria-label="Twitter"><i className="fab fa-twitter fa-lg mx-2"></i></a>
+            <a href="#" aria-label="Instagram"><i className="fab fa-instagram fa-lg mx-2"></i></a>
           </div>
         </div>
       </footer>

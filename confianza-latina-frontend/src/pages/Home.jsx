@@ -1,27 +1,25 @@
+// Home.jsx (sin cambios en las importaciones)
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import SearchBar from '../components/Layout/SearchBar'; // Importa el componente SearchBar
+import SearchBar from '../components/Layout/SearchBar';
 import '../assets/styles/Home.css';
 
 const URL = process.env.REACT_APP_API_URL;
 
-
 const Home = () => {
   const [trabajos, setTrabajos] = useState([]);
   const [message, setMessage] = useState('');
-  const [filteredTrabajos, setFilteredTrabajos] = useState([]); // Estado para trabajos filtrados
+  const [filteredTrabajos, setFilteredTrabajos] = useState([]);
 
   useEffect(() => {
     const fetchTrabajos = async () => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(`${URL}/trabajo`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          headers: { 'Authorization': `Bearer ${token}` }
         });
         setTrabajos(response.data);
-        setFilteredTrabajos(response.data); // Establece los trabajos por defecto
+        setFilteredTrabajos(response.data);
       } catch (error) {
         setMessage('Error: ' + (error.response?.data?.mensaje || 'Algo salió mal'));
       }
@@ -30,13 +28,12 @@ const Home = () => {
     fetchTrabajos();
   }, []);
 
-  // Función para filtrar los trabajos según la búsqueda
   const handleSearch = (searchTerm) => {
     const filtered = trabajos.filter(trabajo =>
       trabajo.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       trabajo.empresa.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setFilteredTrabajos(filtered); // Actualiza los trabajos filtrados
+    setFilteredTrabajos(filtered);
   };
 
   return (
@@ -44,7 +41,6 @@ const Home = () => {
       <h1 className="text-center">Ofertas de Trabajo</h1>
       {message && <p className="message">{message}</p>}
       
-      {/* Componente de búsqueda */}
       <SearchBar onSearch={handleSearch} />
 
       <div className="trabajos-list">
